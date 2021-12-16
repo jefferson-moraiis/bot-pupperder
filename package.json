@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "db": "json-server --watch db.json --3000",
     "start": "node index.js",
-    "dev":"nodemon index.js --unhandled-rejections=strict"
+    "dev":"nodemon index.js"
   },
   "author": "",
   "license": "ISC",

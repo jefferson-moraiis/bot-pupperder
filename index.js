@@ -9,7 +9,7 @@ const routes = require("./src/routes");
 const json = require("./package.json");
 
 const app = express();
-const port = process.env.PORT || 9999;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

@@ -17,13 +17,15 @@ const cadastroBot = async (req,res ) => {
         let lastName = faker.name.lastName()
         let email = faker.internet.email()
             users.push ({ 
-                "id": id, 
                 "first_name": firstName, 
                 "last_name": lastName, 
                 "email": email 
             }) 
         }
         fs.writeFile('db_users.json',JSON.stringify(users,null,2), function (err) {
+            if (err) throw err;
+        });
+        fs.appendFile('users.json',JSON.stringify(users,null,2), function (err) {
             if (err) throw err;
         });
           return  res.status(201).json(users)
