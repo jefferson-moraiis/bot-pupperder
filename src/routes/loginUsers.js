@@ -1,27 +1,63 @@
 // Application
 const puppeteer = require('puppeteer');
-  
+const users = require('../../db_users.json')
 
-async function loginBot(req,res){
+const x = Object.keys(users).map(function(_) { return users[_]; })
 
-    let {email}= req.body
+let i = 0
+function login(req,res){
+
+  let {link} = req.body 
+
+    for(var i = 0; i < users.length; i++) {
+    
+      if(i === 0){
+        loginUser1(x[0].email)
+      } else if ( i === 1){
+        setTimeout(function(){ loginUser2(x[1].email),link }, 120000)
+      }else if ( i === 2){
+        setTimeout(function(){ loginUser3(x[2].email),link  }, 240000)
+      }else if ( i === 3){
+        setTimeout(function(){ loginUser4(x[3].email),link  }, 360000)
+      }else if ( i === 4){
+        setTimeout(function(){ loginUser5(x[4].email),link  }, 480000)
+      }else if ( i === 5){
+        setTimeout(function(){ loginUser6(x[5].email),link  }, 600000)
+      }else if ( i === 6){
+        setTimeout(function(){ loginUser7(x[6].email),link  }, 720000)
+      }else if ( i === 7){
+        setTimeout(function(){ loginUser8(x[7].email),link  }, 840000)
+      }else if ( i === 8){
+        setTimeout(function(){ loginUser9(x[8].email),link  }, 960000)
+      }else if ( i === 9){
+        setTimeout(function(){ loginUser10(x[9].email),link  }, 100000)
+      }
+              
+    }
+}
+
+login()
+
+async function loginUser1(email,link){
+
+
+      
     console.log(`${email}  realizando login`)
 
-    try {
         const browser = await puppeteer.launch({
             headless: false,
           });;
           const page = await browser.newPage();
-          await page.goto('https://focusgroupit.com/groups/c5178c97/session/new');
+          await page.goto(link);
           await page.waitForSelector('[name=email]')
           await page.type('#email', email)
           await page.type('#password', '12345678')
           await page.click('[type="submit"]')
           await page.waitForNavigation();
-          console.log('respondendo a p1')  
+          console.log('respondendo...')   
       
           responder()
-          
+      
           async function responder(){
             if ('[type="checkbox"]') {
       
@@ -37,24 +73,493 @@ async function loginBot(req,res){
                   radio.click();
               },radiosValue);
       
-            }else{
-                await page.close()
+            } else if (!'[input[name="reply[choice_ids][]"]]'){
+              browser.close()
             }
             await page.click('[type="submit"]')
-            await page.waitForNavigation();
+            await page.waitForNavigation({
+              waitUntil: 'networkidle0',
+            });
+            await page.click('a.btn')
+          }
+      
+          await page.waitForNavigation();
+            setInterval(function(){ 
+              responder()
+              .then(console.log('aqui'))
+              .catch(err => {
+                throw new Error(err);
+              }) 
+            }, await page.waitForNavigation())
+
+          };
+          
+async function loginUser2(email){
+
+
+      
+            console.log(`${email}  realizando login`)
+        
+                const browser = await puppeteer.launch({
+                    headless: false,
+                  });;
+                  const page = await browser.newPage();
+                  await page.goto(link);
+                  await page.waitForSelector('[name=email]')
+                  await page.type('#email', email)
+                  await page.type('#password', '12345678')
+                  await page.click('[type="submit"]')
+                  await page.waitForNavigation();
+                  console.log('respondendo...')   
+              
+                  responder()
+              
+                  async function responder(){
+                    if ('[type="checkbox"]') {
+              
+                      await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+                      checks.forEach(c =>c.checked = Math.random() >= 0.5))
+              
+                    } else if ('[type="radio"]'){
+              
+                        const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+                        let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+                        await page.evaluate( (radiosValue) => {
+                          let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                          radio.click();
+                      },radiosValue);
+              
+                    }
+                    await page.click('[type="submit"]')
+                    await page.waitForNavigation({
+                      waitUntil: 'networkidle0',
+                    });
+                    await page.click('a.btn')
+                  }
+              
+                  await page.waitForNavigation();
+                  setInterval(function(){ responder() }, await page.waitForNavigation())
+  };
+
+  async function loginUser3(email){
+
+
+      
+    console.log(`${email}  realizando login`)
+
+        const browser = await puppeteer.launch({
+            headless: false,
+          });;
+          const page = await browser.newPage();
+          await page.goto(link);
+          await page.waitForSelector('[name=email]')
+          await page.type('#email', email)
+          await page.type('#password', '12345678')
+          await page.click('[type="submit"]')
+          await page.waitForNavigation();
+          console.log('respondendo...')   
+      
+          responder()
+      
+          async function responder(){
+            if ('[type="checkbox"]') {
+      
+              await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+              checks.forEach(c =>c.checked = Math.random() >= 0.5))
+      
+            } else if ('[type="radio"]'){
+      
+                const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+                let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+                await page.evaluate( (radiosValue) => {
+                  let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                  radio.click();
+              },radiosValue);
+      
+            }
+            await page.click('[type="submit"]')
+            await page.waitForNavigation({
+              waitUntil: 'networkidle0',
+            });
             await page.click('a.btn')
           }
       
           await page.waitForNavigation();
           setInterval(function(){ responder() }, await page.waitForNavigation())
-          
-          res.status(200).json('efetuando o login e respondendo a perguntas')
-     }
-     catch(error){
-        await page.close()
-    }
-}
+};
+
+async function loginUser4(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+
+async function loginUser5(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+
+async function loginUser6(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+async function loginUser7(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+async function loginUser8(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+async function loginUser9(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+async function loginUser10(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+async function loginUser2(email){
+
+
+      
+  console.log(`${email}  realizando login`)
+
+      const browser = await puppeteer.launch({
+          headless: false,
+        });;
+        const page = await browser.newPage();
+        await page.goto(link);
+        await page.waitForSelector('[name=email]')
+        await page.type('#email', email)
+        await page.type('#password', '12345678')
+        await page.click('[type="submit"]')
+        await page.waitForNavigation();
+        console.log('respondendo...')   
+    
+        responder()
+    
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
+};
+        
 
     module.exports = {
-        loginBot
+        login,
     }

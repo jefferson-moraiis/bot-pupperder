@@ -11,7 +11,7 @@ const router = Router();
 
 router.post("/create-users", createUsers.cadastroBot);
 router.post("/singUp", singUpUsers.cadastroBot);
-router.post("/login", loginUsers.loginBot), 
-router.post("/responseQuestions", resQuestions.responseQuestions)
+router.post("/login", loginUsers.login), 
+//router.post("/responseQuestions", resQuestions.responseQuestions)
 
 module.exports = router;

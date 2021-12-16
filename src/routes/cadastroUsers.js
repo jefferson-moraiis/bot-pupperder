@@ -31,14 +31,40 @@ const cadastroBot = async (req,res )=>{
         await page.type('#user_first_name', name)
         await page.type('#user_last_name', lastName)
         await page.click('[type="submit"]')
+
+
+        responder()
+      
+        async function responder(){
+          if ('[type="checkbox"]') {
+    
+            await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+            checks.forEach(c =>c.checked = Math.random() >= 0.5))
+    
+          } else if ('[type="radio"]'){
+    
+              const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+              let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+              await page.evaluate( (radiosValue) => {
+                let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+                radio.click();
+            },radiosValue);
+    
+          }
+          await page.click('[type="submit"]')
+          await page.waitForNavigation({
+            waitUntil: 'networkidle0',
+          });
+          await page.click('a.btn')
+        }
+    
+        await page.waitForNavigation();
+        setInterval(function(){ responder() }, await page.waitForNavigation())
     }
 
     try {
         
         users.map((value)=>{
-            
-            let ids = value.id
-
             for(var i = 0; i < users.length; i++) {
                 createUser(value.email,value.first_name,value.last_name)
                 break;
