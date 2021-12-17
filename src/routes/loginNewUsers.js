@@ -5,7 +5,7 @@ const users = require('../../db_users.json')
 const login = async(req,res) => {
   
     
-    let link ='https://focusgroupit.com/groups/a9ed13b7/session/new'
+    let link ='https://focusgroupit.com/groups/90bd601b/session/new'
 
     let {email} = req.body
 
@@ -62,34 +62,38 @@ async function loginBot(email,link){
   responder()
 
   async function responder(){
-    if ('[type="checkbox"]') {
+    try {
+      if ('[type="checkbox"]') {
 
-      await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
-      checks.forEach(c =>c.checked = Math.random() >= 0.5))
+        await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+        checks.forEach(c =>c.checked = Math.random() >= 0.5))
 
-    } else if ('[type="radio"]'){
+      } else if ('[type="radio"]'){
 
-        const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
-        let radiosValue = radios[Math.floor(Math.random()*radios.length)]
-        await page.evaluate( (radiosValue) => {
-          let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
-          radio.click();
-      },radiosValue);
+          const radios = await page.$$eval('input[name="reply[choice_ids][]"]', inputs => { return inputs.map(input => input.value) })
+          let radiosValue = radios[Math.floor(Math.random()*radios.length)]
+          await page.evaluate( (radiosValue) => {
+            let radio =  document.querySelector(`input[name="reply[choice_ids][]"][value="${radiosValue}"]`);
+            radio.click();
+        },radiosValue);
 
+      }
+
+      await Promise.all([
+        await page.click('[type="submit"]'),
+        await page.waitForNavigation({
+          waitUntil: 'networkidle0',
+        }),
+        await page.click('a.btn') ,
+      ]).catch(e => console.log(e));
     }
-
-    await Promise.all([
-      await page.click('[type="submit"]'),
-      await page.waitForNavigation({
-        waitUntil: 'networkidle0',
-      }),
-      await page.click('a.btn') ,
-  ]).catch(e => console.log(e));
-    
+    catch (e) {
+      console.log(e)
+    } 
   }
 
   await page.waitForNavigation();
-  setInterval(function(){ responder() }, await page.waitForNavigation())
+  setInterval(function(){ responder() }, 3000)
 };
 
   module.exports = {
