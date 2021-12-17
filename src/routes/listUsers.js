@@ -1,4 +1,4 @@
-const users = require('../../users.json')
+const users = require('../../db_users.json')
 
 
 
@@ -11,7 +11,7 @@ const listUsers = (req,res) => {
         list.push(userEmail[i].email );
     }
 
-        return res.status(200).json({'qtd':list.length,'email':list})
+    return res.status(200).json({'qtd':list.length,'email':list})
 
 }
 module.exports ={

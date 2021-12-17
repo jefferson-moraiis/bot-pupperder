@@ -13,7 +13,7 @@ const router = Router();
 
 router.post("/create-users", createUsers.cadastroBot);
 router.post("/singUp", singUpUsers.cadastroBot);
-router.post("/login", loginNewUsers.loginBot), 
+router.post("/login", loginNewUsers.login), 
 router.post("/responseQuestions", loginUsers.login)
 router.get("/list", listUSer.listUsers)
 
