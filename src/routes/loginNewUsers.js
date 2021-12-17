@@ -5,7 +5,7 @@ const users = require('../../db_users.json')
 const login = async(req,res) => {
   
     
-    let link ='https://focusgroupit.com/groups/90bd601b/session/new'
+    let link ='https://focusgroupit.com/groups/a9ed13b7/session/new'
 
     let {email} = req.body
 
@@ -57,15 +57,14 @@ async function loginBot(email,link){
   await page.type('#password', '12345678')
   await page.click('[type="submit"]')
   await page.waitForNavigation();
-  console.log('respondendo a p1')  
-
   responder()
-
+  console.log('respondendo')  
   async function responder(){
+    
     try {
       if ('[type="checkbox"]') {
 
-        await page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
+        page.$$eval( 'input[name="reply[choice_ids][]"]', (checks) => 
         checks.forEach(c =>c.checked = Math.random() >= 0.5))
 
       } else if ('[type="radio"]'){
@@ -99,3 +98,4 @@ async function loginBot(email,link){
   module.exports = {
     login
   }
+  
