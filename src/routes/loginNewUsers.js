@@ -11,8 +11,6 @@ const login = async(req,res) => {
 
     loginBot(email,link)
 
-
-
     // const x = Object.keys(users).map(function(_) { return users[_]; })
 
     //   for(var i = 0; i < users.length; i++) {
