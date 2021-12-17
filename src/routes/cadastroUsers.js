@@ -1,8 +1,9 @@
 // 3rd parties
 const puppeteer = require('puppeteer');
+const moment = require('moment')
 
 // Application
-const users = require('../../db_users.json')
+const users = require(`../../db_users_${moment().format('YYYY-MM-DD')}.json`)
 
 const cadastroBot = async ()=>{
 

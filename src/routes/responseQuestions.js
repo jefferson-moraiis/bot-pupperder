@@ -1,4 +1,4 @@
-const users = require('../../db_users.json')
+const users = require('../../users.json')
 
 const puppeteer = require('puppeteer');
 

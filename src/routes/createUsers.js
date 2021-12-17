@@ -1,5 +1,6 @@
 // 3rd parties
 const faker = require('faker')
+const moment = require('moment')
 
 // Application
 const fs = require('fs')
@@ -22,10 +23,7 @@ const cadastroBot = async (req,res ) => {
                 "email": email 
             }) 
         }
-        fs.writeFile('db_users.json',JSON.stringify(users,null,2), function (err) {
-            if (err) throw err;
-        });
-        fs.appendFile('users.json',JSON.stringify(users,null,2), function (err) {
+        fs.writeFile(`db_users_${moment().format('YYYY-MM-DD')}.json`,JSON.stringify(users,null,2), function (err) {
             if (err) throw err;
         });
           return  res.status(201).json(users)

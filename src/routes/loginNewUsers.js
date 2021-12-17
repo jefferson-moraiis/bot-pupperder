@@ -1,12 +1,11 @@
 const puppeteer = require('puppeteer');
-
-const users = require('../../db_users.json')
+const moment = require('moment')
+const users = require(`../../db_users_${moment().format('YYYY-MM-DD')}.json`)
 
 const login = async(req,res) => {
   
     
-    let link ='https://focusgroupit.com/groups/90bd601b/session/new'
-
+    let {link} = req.body
     // let {email} = req.body
 
     // loginBot(email,link)

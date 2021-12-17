@@ -1,6 +1,6 @@
 // Application
 const puppeteer = require('puppeteer');
-const users = require('../../db_users.json')
+const users = require('../../users.json')
 
 const login = async(req,res) => {
 
