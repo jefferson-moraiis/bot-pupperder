@@ -1,17 +1,18 @@
 // 3rd parties
-require("dotenv").config();
 const express = require("express");
 
 // Application
-const fs = require('fs').promises
 const bodyParser = require("body-parser");
 const routes = require("./src/routes");
-const json = require("./package.json");
+const json = require("../package.json");
+const cors = require("cors");
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -23,5 +24,5 @@ app.get("/", (req, res) => {
 app.use("/api", routes);
 
 app.listen(port, () => {
-  console.log(`running at http://localhost:${port}`);
+  console.log(`Bot iniciado 🤖 `);
 });
